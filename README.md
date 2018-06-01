@@ -1,5 +1,5 @@
 # SimpleConnectDB
-研究室課題その2
+研究室課題その2  
 シンプルなデータベースのクエリープログラム
 
 ## Development
@@ -9,3 +9,8 @@
 - ScalikeJDBC 3.2.2
 - Docker 18.0.3.1
 
+## Table
+|id(int, primary key, serial)|name(varchar, non null)|
+|:-:|:-:|
+|1|hoge|
+|2|fuga|
