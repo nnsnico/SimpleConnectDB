@@ -1,3 +1,5 @@
+import java.util.Scanner
+
 import scalikejdbc._
 import scalikejdbc.config._
 
@@ -17,6 +19,15 @@ object Main extends App {
   // `/main/resources/application.conf`内で設定した通りにdbをセットアップ
   DBs.setupAll()
   implicit val session: AutoSession = AutoSession
+  val scanner: Scanner = new Scanner(System.in)
+
+  print("input sql statement: ")
+  val sql = scanner.next()
+  print("input name value: ")
+  val name = scanner.next()
+  val sqlMap: Map[String, String] = Map("sql" -> sql, "name" -> name)
+
+  execSql(sqlMap)
 
   // query all
   val sample = Sample.syntax("sample")
@@ -33,4 +44,16 @@ object Main extends App {
   }
 
   DBs.closeAll()
+
+  def execSql(sqlParam: Map[String, String]): Unit = sqlParam("sql") match {
+    case "insert" =>
+      applyUpdate {
+        insert.into(Sample).namedValues(Sample.column.name -> sqlParam("name"))
+      }
+    case "delete" =>
+      applyUpdate {
+        delete.from(Sample).where.eq(Sample.column.name, sqlParam("name"))
+      }
+    case _ =>
+  }
 }
